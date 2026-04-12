@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 async function connectDatabase(){
-    await mongoose.connect("mongodb+srv://HR_agarwal:hr%40mongoose1234@mangocluster.dlvojw3.mongodb.net/Leetcode")
+    await mongoose.connect(process.env.MONGO_URI)
 }
 
 module.exports = connectDatabase

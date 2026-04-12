@@ -10,7 +10,7 @@ const tokenValidator = require("./controllers/tokenValidator")
 const userRouter = require("./routes/user")
 const problemRouter = require("./routes/problemRoutes")
 const submissionRouter = require("./routes/submissions")
-
+require("dotenv").config()
 const app = express()
 app.use(express.json());
 
