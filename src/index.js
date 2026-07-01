@@ -1,33 +1,30 @@
-const express = require("express")
-const validator = require('validator')
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-const cookieParser = require("cookie-parser")
+const express = require('express')
+const app = express();
+require('dotenv').config();
+const main =  require('./config/db')
+const cookieParser =  require('cookie-parser');
+const authRouter = require("./routes/userAuth");
+const redisClient = require('./config/redis');
+const problemRouter = require("./routes/problemCreator");
+const submitRouter = require("./routes/submit")
 
-const connectDatabase = require("./db/mongoose")
-const redisClient = require("./db/redis")
-const tokenValidator = require("./controllers/tokenValidator")
-const userRouter = require("./routes/user")
-const problemRouter = require("./routes/problemRoutes")
-const submissionRouter = require("./routes/submissions")
-require("dotenv").config()
-const app = express()
+
 app.use(express.json());
+app.use(cookieParser());
 
-app.use(cookieParser())
+app.use('/user',authRouter);
+app.use('/problem',problemRouter);
+app.use('/submission',submitRouter);
 
-app.use("/user",userRouter)
-app.use("/problem",problemRouter)
-app.use("/submission",submissionRouter)
 
-async function initializeConnections(){
+const InitalizeConnection = async ()=>{
     try{
 
-        await Promise.all([connectDatabase(),redisClient.connect()]);
+        await Promise.all([main(),redisClient.connect()]);
         console.log("DB Connected");
         
-        app.listen(4000, ()=>{
-            console.log("Server has started listening");
+        app.listen(process.env.PORT, ()=>{
+            console.log("Server listening at port number: "+ process.env.PORT);
         })
 
     }
@@ -36,4 +33,6 @@ async function initializeConnections(){
     }
 }
 
-initializeConnections()
+
+InitalizeConnection();
+

@@ -1,8 +1,10 @@
-# node modules
 node_modules/
-
-# environment variables (for future)
 .env
 
-# logs
+coverage/
+dist/
+
 *.log
+npm-debug.log*
+
+.vscode/
